@@ -1,0 +1,20 @@
+strict:
+  require_firmware_signature: true
+  allow_unsigned_firmware: false
+  allow_tampered_firmware: false
+  quarantine_on_backdoor_detection: true
+  require_approval_for_mass_commands: true
+
+weak_baseline:
+  require_firmware_signature: false
+  allow_unsigned_firmware: true
+  allow_tampered_firmware: true
+  quarantine_on_backdoor_detection: false
+  require_approval_for_mass_commands: false
+
+balanced:
+  require_firmware_signature: true
+  allow_unsigned_firmware: false
+  allow_tampered_firmware: false
+  quarantine_on_backdoor_detection: true
+  require_approval_for_mass_commands: true

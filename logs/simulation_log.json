@@ -1,0 +1,511 @@
+[
+  {
+    "timestamp": "2026-07-07T13:42:15.273114+00:00",
+    "scenario": "normal",
+    "source_ip": "10.0.0.10",
+    "command_text": "Set first 10 Building A thermostats to 22 degrees",
+    "parsed_command": {
+      "intent": "set_temperature",
+      "target_scope": "building",
+      "target_building": "Building A",
+      "requested_temperature": 22.0,
+      "target_device_limit": 10,
+      "is_mass_command": false,
+      "approval_granted": false,
+      "firmware_package": null,
+      "raw_text": "Set first 10 Building A thermostats to 22 degrees"
+    },
+    "policy_decision": "APPROVED",
+    "reasons": [],
+    "target_device_count": 10,
+    "devices_changed": 10,
+    "attack_detected": false,
+    "security_profile": "strict",
+    "firmware_id": null,
+    "firmware_version": null,
+    "firmware_signature_valid": null,
+    "firmware_tampered": null,
+    "firmware_contains_backdoor": null,
+    "backdoor_enabled": false,
+    "trust_status_before": {
+      "trusted": 10
+    },
+    "trust_status_after": {
+      "trusted": 10
+    },
+    "devices_compromised": 0,
+    "compromised_device_ids": [],
+    "devices_quarantined": 0,
+    "devices_recovered": 0,
+    "simulated_backdoor_attempt": false,
+    "simulated_backdoor_success": false,
+    "eligible_backdoor_devices": 0,
+    "backdoor_affected_devices": 0,
+    "backdoor_blocked_devices": 0,
+    "compromised_devices_targeted": 0,
+    "trusted_devices_targeted": 0
+  },
+  {
+    "timestamp": "2026-07-07T13:42:15.283219+00:00",
+    "scenario": "mass_command",
+    "source_ip": "10.0.0.10",
+    "command_text": "Set all thermostats to 21 degrees",
+    "parsed_command": {
+      "intent": "set_temperature",
+      "target_scope": "all",
+      "target_building": null,
+      "requested_temperature": 21.0,
+      "target_device_limit": null,
+      "is_mass_command": true,
+      "approval_granted": false,
+      "firmware_package": null,
+      "raw_text": "Set all thermostats to 21 degrees"
+    },
+    "policy_decision": "BLOCKED",
+    "reasons": [
+      "Command targets 100 devices, exceeding threshold of 20 without approval."
+    ],
+    "target_device_count": 100,
+    "devices_changed": 0,
+    "attack_detected": false,
+    "security_profile": "strict",
+    "firmware_id": null,
+    "firmware_version": null,
+    "firmware_signature_valid": null,
+    "firmware_tampered": null,
+    "firmware_contains_backdoor": null,
+    "backdoor_enabled": false,
+    "trust_status_before": {
+      "trusted": 100
+    },
+    "trust_status_after": {
+      "trusted": 100
+    },
+    "devices_compromised": 0,
+    "compromised_device_ids": [],
+    "devices_quarantined": 0,
+    "devices_recovered": 0,
+    "simulated_backdoor_attempt": false,
+    "simulated_backdoor_success": false,
+    "eligible_backdoor_devices": 0,
+    "backdoor_affected_devices": 0,
+    "backdoor_blocked_devices": 0,
+    "compromised_devices_targeted": 0,
+    "trusted_devices_targeted": 0
+  },
+  {
+    "timestamp": "2026-07-07T13:42:15.288794+00:00",
+    "scenario": "firmware_valid_update",
+    "source_ip": "10.0.0.20",
+    "command_text": "Install firmware version 1.1.0 on first 10 thermostats",
+    "parsed_command": {
+      "intent": "firmware_update",
+      "target_scope": "all",
+      "target_building": null,
+      "requested_temperature": null,
+      "target_device_limit": 10,
+      "is_mass_command": true,
+      "approval_granted": false,
+      "firmware_package": {
+        "firmware_id": "fw-1.1.0",
+        "manufacturer_id": "ThermoGrid-X",
+        "version": "1.1.0",
+        "signature_valid": true,
+        "is_tampered": false,
+        "contains_simulated_backdoor": false,
+        "release_channel": "stable"
+      },
+      "raw_text": "Install firmware version 1.1.0 on first 10 thermostats"
+    },
+    "policy_decision": "APPROVED",
+    "reasons": [],
+    "target_device_count": 10,
+    "devices_changed": 10,
+    "attack_detected": false,
+    "security_profile": "strict",
+    "firmware_id": "fw-1.1.0",
+    "firmware_version": "1.1.0",
+    "firmware_signature_valid": true,
+    "firmware_tampered": false,
+    "firmware_contains_backdoor": false,
+    "backdoor_enabled": false,
+    "trust_status_before": {
+      "trusted": 10
+    },
+    "trust_status_after": {
+      "trusted": 10
+    },
+    "devices_compromised": 0,
+    "compromised_device_ids": [],
+    "devices_quarantined": 0,
+    "devices_recovered": 0,
+    "simulated_backdoor_attempt": false,
+    "simulated_backdoor_success": false,
+    "eligible_backdoor_devices": 0,
+    "backdoor_affected_devices": 0,
+    "backdoor_blocked_devices": 0,
+    "compromised_devices_targeted": 0,
+    "trusted_devices_targeted": 0
+  },
+  {
+    "timestamp": "2026-07-07T13:42:15.292809+00:00",
+    "scenario": "firmware_tampering_blocked",
+    "source_ip": "10.0.0.20",
+    "command_text": "Install tampered firmware version 1.1.0 on first 10 thermostats",
+    "parsed_command": {
+      "intent": "firmware_update",
+      "target_scope": "all",
+      "target_building": null,
+      "requested_temperature": null,
+      "target_device_limit": 10,
+      "is_mass_command": true,
+      "approval_granted": false,
+      "firmware_package": {
+        "firmware_id": "fw-1.1.0",
+        "manufacturer_id": "ThermoGrid-X",
+        "version": "1.1.0",
+        "signature_valid": false,
+        "is_tampered": true,
+        "contains_simulated_backdoor": false,
+        "release_channel": "lab"
+      },
+      "raw_text": "Install tampered firmware version 1.1.0 on first 10 thermostats"
+    },
+    "policy_decision": "BLOCKED",
+    "reasons": [
+      "Firmware signature is invalid and this profile requires valid signatures.",
+      "Unsigned or invalid-signature firmware is not allowed.",
+      "Tampered firmware is blocked by the selected security profile."
+    ],
+    "target_device_count": 10,
+    "devices_changed": 0,
+    "attack_detected": true,
+    "security_profile": "strict",
+    "firmware_id": "fw-1.1.0",
+    "firmware_version": "1.1.0",
+    "firmware_signature_valid": false,
+    "firmware_tampered": true,
+    "firmware_contains_backdoor": false,
+    "backdoor_enabled": false,
+    "trust_status_before": {
+      "trusted": 10
+    },
+    "trust_status_after": {
+      "trusted": 10
+    },
+    "devices_compromised": 0,
+    "compromised_device_ids": [],
+    "devices_quarantined": 0,
+    "devices_recovered": 0,
+    "simulated_backdoor_attempt": false,
+    "simulated_backdoor_success": false,
+    "eligible_backdoor_devices": 0,
+    "backdoor_affected_devices": 0,
+    "backdoor_blocked_devices": 0,
+    "compromised_devices_targeted": 0,
+    "trusted_devices_targeted": 0
+  },
+  {
+    "timestamp": "2026-07-07T13:42:15.292809+00:00",
+    "scenario": "firmware_tampering_weak_profile",
+    "source_ip": "10.0.0.20",
+    "command_text": "Install tampered unsigned firmware version 1.1.0 with backdoor on first 5 thermostats",
+    "parsed_command": {
+      "intent": "firmware_update",
+      "target_scope": "all",
+      "target_building": null,
+      "requested_temperature": null,
+      "target_device_limit": 5,
+      "is_mass_command": true,
+      "approval_granted": false,
+      "firmware_package": {
+        "firmware_id": "fw-1.1.0",
+        "manufacturer_id": "ThermoGrid-X",
+        "version": "1.1.0",
+        "signature_valid": false,
+        "is_tampered": true,
+        "contains_simulated_backdoor": true,
+        "release_channel": "lab"
+      },
+      "raw_text": "Install tampered unsigned firmware version 1.1.0 with backdoor on first 5 thermostats"
+    },
+    "policy_decision": "APPROVED",
+    "reasons": [],
+    "target_device_count": 5,
+    "devices_changed": 5,
+    "attack_detected": true,
+    "security_profile": "weak_baseline",
+    "firmware_id": "fw-1.1.0",
+    "firmware_version": "1.1.0",
+    "firmware_signature_valid": false,
+    "firmware_tampered": true,
+    "firmware_contains_backdoor": true,
+    "backdoor_enabled": true,
+    "trust_status_before": {
+      "trusted": 5
+    },
+    "trust_status_after": {
+      "compromised": 5
+    },
+    "devices_compromised": 5,
+    "compromised_device_ids": [
+      "BUILDING-A-001",
+      "BUILDING-A-002",
+      "BUILDING-A-003",
+      "BUILDING-A-004",
+      "BUILDING-A-005"
+    ],
+    "devices_quarantined": 0,
+    "devices_recovered": 0,
+    "simulated_backdoor_attempt": false,
+    "simulated_backdoor_success": false,
+    "eligible_backdoor_devices": 0,
+    "backdoor_affected_devices": 0,
+    "backdoor_blocked_devices": 0,
+    "compromised_devices_targeted": 0,
+    "trusted_devices_targeted": 0
+  },
+  {
+    "timestamp": "2026-07-07T13:42:15.292809+00:00",
+    "scenario": "simulated_backdoor_access",
+    "source_ip": "10.0.0.20",
+    "command_text": "Install tampered unsigned firmware version 1.1.0 with backdoor on first 5 thermostats",
+    "parsed_command": {
+      "intent": "firmware_update",
+      "target_scope": "all",
+      "target_building": null,
+      "requested_temperature": null,
+      "target_device_limit": 5,
+      "is_mass_command": true,
+      "approval_granted": false,
+      "firmware_package": {
+        "firmware_id": "fw-1.1.0",
+        "manufacturer_id": "ThermoGrid-X",
+        "version": "1.1.0",
+        "signature_valid": false,
+        "is_tampered": true,
+        "contains_simulated_backdoor": true,
+        "release_channel": "lab"
+      },
+      "raw_text": "Install tampered unsigned firmware version 1.1.0 with backdoor on first 5 thermostats"
+    },
+    "policy_decision": "APPROVED",
+    "reasons": [],
+    "target_device_count": 5,
+    "devices_changed": 5,
+    "attack_detected": true,
+    "security_profile": "weak_baseline",
+    "firmware_id": "fw-1.1.0",
+    "firmware_version": "1.1.0",
+    "firmware_signature_valid": false,
+    "firmware_tampered": true,
+    "firmware_contains_backdoor": true,
+    "backdoor_enabled": true,
+    "trust_status_before": {
+      "compromised": 5
+    },
+    "trust_status_after": {
+      "compromised": 5
+    },
+    "devices_compromised": 0,
+    "compromised_device_ids": [],
+    "devices_quarantined": 0,
+    "devices_recovered": 0,
+    "simulated_backdoor_attempt": false,
+    "simulated_backdoor_success": false,
+    "eligible_backdoor_devices": 0,
+    "backdoor_affected_devices": 0,
+    "backdoor_blocked_devices": 0,
+    "compromised_devices_targeted": 0,
+    "trusted_devices_targeted": 0
+  },
+  {
+    "timestamp": "2026-07-07T13:42:15.299458+00:00",
+    "scenario": "simulated_backdoor_access",
+    "source_ip": "203.0.113.50",
+    "command_text": "Simulated backdoor direct command to 19 degrees",
+    "parsed_command": {
+      "intent": "simulated_backdoor_access",
+      "requested_temperature": 19,
+      "target_scope": "limited"
+    },
+    "policy_decision": "APPROVED",
+    "reasons": [
+      "Simulated backdoor path affected compromised devices."
+    ],
+    "target_device_count": 10,
+    "devices_changed": 5,
+    "attack_detected": true,
+    "security_profile": "weak_baseline",
+    "firmware_id": null,
+    "firmware_version": null,
+    "firmware_signature_valid": null,
+    "firmware_tampered": null,
+    "firmware_contains_backdoor": null,
+    "backdoor_enabled": false,
+    "trust_status_before": {
+      "compromised": 5,
+      "trusted": 5
+    },
+    "trust_status_after": {
+      "compromised": 5,
+      "trusted": 5
+    },
+    "devices_compromised": 0,
+    "compromised_device_ids": [],
+    "devices_quarantined": 0,
+    "devices_recovered": 0,
+    "simulated_backdoor_attempt": true,
+    "simulated_backdoor_success": true,
+    "eligible_backdoor_devices": 5,
+    "backdoor_affected_devices": 5,
+    "backdoor_blocked_devices": 5,
+    "compromised_devices_targeted": 5,
+    "trusted_devices_targeted": 5
+  },
+  {
+    "timestamp": "2026-07-07T13:42:15.299458+00:00",
+    "scenario": "quarantine_recovery",
+    "source_ip": "10.0.0.20",
+    "command_text": "Install tampered unsigned firmware version 1.1.0 with backdoor on first 5 thermostats",
+    "parsed_command": {
+      "intent": "firmware_update",
+      "target_scope": "all",
+      "target_building": null,
+      "requested_temperature": null,
+      "target_device_limit": 5,
+      "is_mass_command": true,
+      "approval_granted": false,
+      "firmware_package": {
+        "firmware_id": "fw-1.1.0",
+        "manufacturer_id": "ThermoGrid-X",
+        "version": "1.1.0",
+        "signature_valid": false,
+        "is_tampered": true,
+        "contains_simulated_backdoor": true,
+        "release_channel": "lab"
+      },
+      "raw_text": "Install tampered unsigned firmware version 1.1.0 with backdoor on first 5 thermostats"
+    },
+    "policy_decision": "APPROVED",
+    "reasons": [],
+    "target_device_count": 5,
+    "devices_changed": 5,
+    "attack_detected": true,
+    "security_profile": "weak_baseline",
+    "firmware_id": "fw-1.1.0",
+    "firmware_version": "1.1.0",
+    "firmware_signature_valid": false,
+    "firmware_tampered": true,
+    "firmware_contains_backdoor": true,
+    "backdoor_enabled": true,
+    "trust_status_before": {
+      "compromised": 5
+    },
+    "trust_status_after": {
+      "compromised": 5
+    },
+    "devices_compromised": 0,
+    "compromised_device_ids": [],
+    "devices_quarantined": 0,
+    "devices_recovered": 0,
+    "simulated_backdoor_attempt": false,
+    "simulated_backdoor_success": false,
+    "eligible_backdoor_devices": 0,
+    "backdoor_affected_devices": 0,
+    "backdoor_blocked_devices": 0,
+    "compromised_devices_targeted": 0,
+    "trusted_devices_targeted": 0
+  },
+  {
+    "timestamp": "2026-07-07T13:42:15.299458+00:00",
+    "scenario": "quarantine_recovery",
+    "source_ip": "10.0.0.20",
+    "command_text": "Detect, quarantine, test simulated backdoor, and recover devices",
+    "parsed_command": {
+      "intent": "quarantine_recovery",
+      "target_scope": "all"
+    },
+    "policy_decision": "APPROVED",
+    "reasons": [
+      "Compromised devices quarantined and recovered to safe firmware."
+    ],
+    "target_device_count": 100,
+    "devices_changed": 0,
+    "attack_detected": true,
+    "security_profile": "strict",
+    "firmware_id": null,
+    "firmware_version": null,
+    "firmware_signature_valid": null,
+    "firmware_tampered": null,
+    "firmware_contains_backdoor": null,
+    "backdoor_enabled": false,
+    "trust_status_before": {
+      "compromised": 5,
+      "trusted": 95
+    },
+    "trust_status_after": {
+      "recovered": 5,
+      "trusted": 95
+    },
+    "devices_compromised": 0,
+    "compromised_device_ids": [],
+    "devices_quarantined": 5,
+    "devices_recovered": 5,
+    "simulated_backdoor_attempt": true,
+    "simulated_backdoor_success": false,
+    "eligible_backdoor_devices": 0,
+    "backdoor_affected_devices": 0,
+    "backdoor_blocked_devices": 10,
+    "compromised_devices_targeted": 0,
+    "trusted_devices_targeted": 10
+  },
+  {
+    "timestamp": "2026-07-07T13:42:15.299458+00:00",
+    "scenario": "approved_mass_command",
+    "source_ip": "10.0.0.10",
+    "command_text": "Approve and set all thermostats to 21 degrees",
+    "parsed_command": {
+      "intent": "set_temperature",
+      "target_scope": "all",
+      "target_building": null,
+      "requested_temperature": 21.0,
+      "target_device_limit": null,
+      "is_mass_command": true,
+      "approval_granted": true,
+      "firmware_package": null,
+      "raw_text": "Approve and set all thermostats to 21 degrees"
+    },
+    "policy_decision": "APPROVED",
+    "reasons": [],
+    "target_device_count": 100,
+    "devices_changed": 100,
+    "attack_detected": false,
+    "security_profile": "strict",
+    "firmware_id": null,
+    "firmware_version": null,
+    "firmware_signature_valid": null,
+    "firmware_tampered": null,
+    "firmware_contains_backdoor": null,
+    "backdoor_enabled": false,
+    "trust_status_before": {
+      "recovered": 5,
+      "trusted": 95
+    },
+    "trust_status_after": {
+      "recovered": 5,
+      "trusted": 95
+    },
+    "devices_compromised": 0,
+    "compromised_device_ids": [],
+    "devices_quarantined": 0,
+    "devices_recovered": 0,
+    "simulated_backdoor_attempt": false,
+    "simulated_backdoor_success": false,
+    "eligible_backdoor_devices": 0,
+    "backdoor_affected_devices": 0,
+    "backdoor_blocked_devices": 0,
+    "compromised_devices_targeted": 0,
+    "trusted_devices_targeted": 0
+  }
+]

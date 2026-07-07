@@ -1,0 +1,12 @@
+manufacturer_id: ThermoGrid-X
+buildings:
+  - building_id: Building A
+    thermostat_count: 50
+    ip_prefix: 10.0.1
+  - building_id: Building B
+    thermostat_count: 50
+    ip_prefix: 10.0.2
+defaults:
+  current_temperature: 24
+  target_temperature: 22
+  firmware_version: 1.0.0

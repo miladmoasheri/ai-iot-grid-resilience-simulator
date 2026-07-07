@@ -1,0 +1,9 @@
+temperature:
+  min: 16
+  max: 28
+  max_change_per_command: 3
+commands:
+  max_devices_without_approval: 20
+security:
+  block_prompt_injection_if_detected: true
+  block_quarantined_devices: true
