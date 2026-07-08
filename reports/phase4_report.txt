@@ -1,0 +1,79 @@
+AI-Assisted Demand Response Cyber-Resilience Simulator
+Phase 4 Report
+
+Purpose:
+Phase 4 runs repeated safe internal simulations to compare security configurations and identify which cyber-physical parameters most affect attack success, demand-response failure, comfort loss, load spike, and recovery.
+
+Monte Carlo Setup:
+- Runs per configuration: 250
+- Total runs: 1000
+- Random seed: 42
+Security configurations compared: adaptive_resilience, firmware_focused, network_focused, weak_baseline
+
+Security Performance:
+- Best configuration for attack reduction: adaptive_resilience
+- Best configuration for demand-response reliability: adaptive_resilience
+- Best configuration for load spike reduction: firmware_focused
+- Best configuration for comfort protection: adaptive_resilience
+
+Operational Drawbacks:
+- Lowest operational friction: weak_baseline
+- Lowest false positives: weak_baseline
+- Lowest approval delay: weak_baseline
+- Highest availability: weak_baseline
+- Lowest security operation cost: weak_baseline
+
+Balanced Conclusion:
+- Best security-focused configuration: adaptive_resilience
+- Best operationally efficient configuration: weak_baseline
+- Best balanced configuration: firmware_focused
+
+Mean Results by Configuration:
+                        attack_success_rate  load_spike_kw  comfort_loss_degree_minutes  demand_response_failure_rate  devices_recovered  false_positive_rate  legitimate_command_rejection_rate  human_approval_delay_minutes  availability_rate  security_operation_cost  total_operational_friction_score  balanced_objective_score  overall_resilience_score
+security_configuration                                                                                                                                                                                                                                                                                                                                          
+adaptive_resilience                  0.0248         5.3377                     178.3800                        0.0142              1.740               0.1062                             0.1140                       22.3236             0.9952                  35.1792                            0.8992                    0.1024                    0.8976
+firmware_focused                     0.0299         5.1379                     181.8257                        0.0169              2.112               0.0610                             0.0710                       15.9480             0.9936                  31.2528                            0.6894                    0.0844                    0.9156
+network_focused                      0.1165        21.9749                    2220.0229                        0.0654              0.000               0.0610                             0.0708                       16.1400             0.9598                  17.3040                            0.5159                    0.1194                    0.8806
+weak_baseline                        0.2762        65.3398                    5533.0629                        0.1558              0.000               0.0248                             0.0360                        6.3588             1.0000                   5.8224                            0.1901                    0.1628                    0.8372
+
+Sensitivity Ranking for Load Spike:
+1. compromised_device_percentage (0.3449)
+2. human_approval_threshold (0.2645)
+3. quarantine_enabled (0.2624)
+4. average_command_latency_ms (0.2554)
+5. prompt_filter_strictness (0.2358)
+
+Sensitivity Ranking for Comfort Loss:
+1. compromised_device_percentage (0.3386)
+2. average_command_latency_ms (0.2712)
+3. human_approval_threshold (0.2681)
+4. quarantine_enabled (0.2646)
+5. prompt_filter_strictness (0.2475)
+
+Sensitivity Ranking for Demand-Response Failure:
+1. compromised_device_percentage (0.504)
+2. average_command_latency_ms (0.376)
+3. human_approval_threshold (0.3745)
+4. quarantine_enabled (0.3695)
+5. prompt_filter_strictness (0.3456)
+
+Sensitivity Ranking for Operational Friction:
+1. average_command_latency_ms (0.9465)
+2. prompt_filter_strictness (0.9142)
+3. false_positive_rate (0.9032)
+4. human_approval_threshold (0.8407)
+5. quarantine_enabled (0.8075)
+
+Sensitivity Interpretation Caution:
+Sensitivity scores are approximate simulation-based rankings, not causal proof. Some variables are bundled by security configuration, so correlations may reflect configuration design. Full causal interpretation would require a factorial design or controlled one-factor-at-a-time experiment.
+
+Interpretation:
+- Lower attack success and load spike generally come from layered controls: firmware validation, quarantine, recovery, and stricter approval thresholds.
+- Stronger configurations can also increase approval burden, false positives, latency, firmware-update delay, monitoring overhead, and security operation cost.
+- The strongest cybersecurity profile is not automatically best overall; the balanced winner depends on the objective weights and operational constraints.
+- Results are generated by a simplified academic simulation, not real device control or grid power-flow analysis.
+
+Output datasets:
+- data/phase4_experiment_results.csv
+- data/phase4_statistical_summary.csv
+- data/phase4_sensitivity_results.csv

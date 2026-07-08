@@ -1,0 +1,5 @@
+security_configuration,attack_success_rate_mean,demand_response_failure_rate_mean,load_spike_kw_mean,comfort_loss_degree_minutes_mean,false_positive_rate_mean,legitimate_command_rejection_rate_mean,human_approval_delay_minutes_mean,availability_rate_mean,total_operational_friction_score_mean,security_operation_cost_mean,balanced_objective_score_mean,overall_resilience_score_mean
+adaptive_resilience,0.0248,0.0142,5.3377,178.38,0.1062,0.114,22.3236,0.9952,0.8992,35.1792,0.1024,0.8976
+firmware_focused,0.0299,0.0169,5.1379,181.8257,0.061,0.071,15.948,0.9936,0.6894,31.2528,0.0844,0.9156
+network_focused,0.1165,0.0654,21.9749,2220.0229,0.061,0.0708,16.14,0.9598,0.5159,17.304,0.1194,0.8806
+weak_baseline,0.2762,0.1558,65.3398,5533.0629,0.0248,0.036,6.3588,1.0,0.1901,5.8224,0.1628,0.8372

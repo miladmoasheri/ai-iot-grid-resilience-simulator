@@ -1,6 +1,6 @@
 [
   {
-    "timestamp": "2026-07-08T08:34:26.478467+00:00",
+    "timestamp": "2026-07-08T09:47:29.236609+00:00",
     "scenario": "power_baseline",
     "source_ip": "simulation",
     "command_text": "Run Phase 3 power scenario: power_baseline",
@@ -58,7 +58,7 @@
     "load_spike_kw_from_compromised_devices": 0.0
   },
   {
-    "timestamp": "2026-07-08T08:34:26.510443+00:00",
+    "timestamp": "2026-07-08T09:47:29.282137+00:00",
     "scenario": "demand_response_normal",
     "source_ip": "simulation",
     "command_text": "Run Phase 3 power scenario: demand_response_normal",
@@ -116,7 +116,7 @@
     "load_spike_kw_from_compromised_devices": 0.0
   },
   {
-    "timestamp": "2026-07-08T08:34:26.535958+00:00",
+    "timestamp": "2026-07-08T09:47:29.325453+00:00",
     "scenario": "demand_response_attack",
     "source_ip": "simulation",
     "command_text": "Run Phase 3 power scenario: demand_response_attack",
@@ -174,7 +174,7 @@
     "load_spike_kw_from_compromised_devices": 100.0
   },
   {
-    "timestamp": "2026-07-08T08:34:26.569324+00:00",
+    "timestamp": "2026-07-08T09:47:29.387767+00:00",
     "scenario": "backdoor_load_spike",
     "source_ip": "simulation",
     "command_text": "Run Phase 3 power scenario: backdoor_load_spike",
@@ -232,7 +232,7 @@
     "load_spike_kw_from_compromised_devices": 10.0
   },
   {
-    "timestamp": "2026-07-08T08:34:26.604869+00:00",
+    "timestamp": "2026-07-08T09:47:29.449556+00:00",
     "scenario": "comfort_violation_attack",
     "source_ip": "simulation",
     "command_text": "Run Phase 3 power scenario: comfort_violation_attack",

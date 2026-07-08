@@ -74,6 +74,14 @@ python src/main.py --scenario comfort_violation_attack
 python src/main.py --scenario phase3_all
 ```
 
+Phase 4 experiment scenarios:
+
+```bash
+python src/main.py --scenario phase4_monte_carlo
+python src/main.py --scenario phase4_sensitivity
+python src/main.py --scenario phase4_all
+```
+
 ## Sample Output
 
 ```text
@@ -98,6 +106,7 @@ Each run writes:
 - `reports/phase1_report.txt` and `reports/phase1_metrics.csv` for Phase 1 scenarios
 - `reports/phase2_report.txt` and `reports/phase2_metrics.csv` for Phase 2 scenarios
 - `reports/phase3_report.txt`, `reports/phase3_metrics.csv`, and `data/phase3_load_timeseries.csv` for Phase 3 scenarios
+- `reports/phase4_report.txt`, `reports/phase4_metrics.csv`, and Phase 4 experiment datasets for Phase 4 scenarios
 
 ## Phase 2
 
@@ -175,9 +184,41 @@ Phase 3 scenarios include:
 - `comfort_violation_attack`: compromised devices are pushed above the comfort band.
 - `phase3_all`: runs the full Phase 3 scenario set and writes one combined report.
 
-## Planned Phase 4 Additions
+## Phase 4
+
+Phase 4 adds repeated experiments, statistical analysis, sensitivity analysis, and security-configuration comparison. It answers research questions such as which parameters most affect attack success, demand-response failure, comfort loss, load spikes, recovery performance, and operational friction.
+
+The Monte Carlo engine uses balanced sampling by configuration. By default it runs 250 experiments for each security configuration, for 1,000 total runs. It varies fleet size, compromised-device percentage, attack temperature, prompt-filter strictness, firmware-signature requirements, approval thresholds, quarantine/recovery settings, HVAC power, ambient temperature, thermal rate, and attack start step.
+
+Security configurations compared:
+
+- `weak_baseline`: weak firmware validation and minimal quarantine/recovery.
+- `network_focused`: stronger network/approval posture with moderate firmware and AI controls.
+- `firmware_focused`: strict firmware validation with recovery enabled.
+- `adaptive_resilience`: layered controls with approval, quarantine, and recovery.
+
+Phase 4 outputs:
+
+- `data/phase4_experiment_results.csv`
+- `data/phase4_statistical_summary.csv`
+- `data/phase4_sensitivity_results.csv`
+- `reports/phase4_report.txt`
+- `reports/phase4_metrics.csv`
+- `reports/phase4_attack_success_distribution.png`
+- `reports/phase4_sensitivity_tornado.png`
+- `reports/phase4_config_comparison.png`
+- `reports/phase4_dr_failure_boxplot.png`
+- `reports/phase4_security_vs_operational_friction.png`
+- `reports/phase4_balanced_objective_by_config.png`
+- `reports/phase4_false_positive_by_config.png`
+- `reports/phase4_approval_delay_by_config.png`
+
+The statistical summary reports mean, median, standard deviation, min, max, and 95 percent confidence intervals for attack success, load spike, comfort loss, demand-response failure, total energy, compromised devices, recovered devices, false positives, command latency, approval delays, availability, security operation cost, operational friction, and composite resilience scores.
+
+The sensitivity analysis uses approximate simulation-based normalized correlation rankings to identify which inputs most influence load spike, comfort loss, demand-response failure, attack success, operational friction, and balanced objective score. These rankings are not causal proof because some variables are bundled by security configuration.
+
+## Planned Phase 5 Additions
 
 - Anomaly detection over thermostat events.
-- Statistical experiments across repeated simulations.
-- Repeated experiments and sensitivity analysis for thermal and power assumptions.
 - Optimization for comfort, safety, and demand-response goals.
+- Dashboard for interactive scenario control and experiment review.

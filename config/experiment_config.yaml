@@ -1,0 +1,54 @@
+monte_carlo:
+  runs_per_configuration: 250
+  random_seed: 42
+
+fleet:
+  default_fleet_size: 100
+  fleet_sizes: [50, 100, 500]
+
+attack:
+  compromised_device_percentages: [5, 10, 25, 50]
+  attack_temperatures: [16, 18, 28]
+  attack_start_steps: [6, 8, 10]
+
+security_configurations:
+  weak_baseline:
+    firmware_signature_required: false
+    prompt_filter_strictness: 0.2
+    human_approval_threshold: 1000
+    quarantine_enabled: false
+    recovery_enabled: false
+
+  network_focused:
+    firmware_signature_required: false
+    prompt_filter_strictness: 0.5
+    human_approval_threshold: 100
+    quarantine_enabled: true
+    recovery_enabled: false
+
+  firmware_focused:
+    firmware_signature_required: true
+    prompt_filter_strictness: 0.5
+    human_approval_threshold: 100
+    quarantine_enabled: true
+    recovery_enabled: true
+
+  adaptive_resilience:
+    firmware_signature_required: true
+    prompt_filter_strictness: 0.8
+    human_approval_threshold: 20
+    quarantine_enabled: true
+    recovery_enabled: true
+
+power:
+  hvac_power_kw_values: [2.0, 2.5, 5.0]
+  ambient_temperatures: [28, 30, 35]
+  temperature_change_rates: [0.15, 0.25, 0.35]
+
+objective_weights:
+  security_risk: 0.30
+  power_impact: 0.20
+  comfort_impact: 0.15
+  demand_response_failure: 0.15
+  operational_friction: 0.10
+  availability_loss: 0.10

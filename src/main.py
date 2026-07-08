@@ -15,6 +15,7 @@ from ai_assistant.prompt_filter import PromptInjectionFilter
 from attacks.backdoor_access import SimulatedBackdoorAccess
 from attacks.scenario_runner import ScenarioRunner
 from devices.fleet_manager import FleetManager
+from experiments.experiment_runner import Phase4ExperimentRunner
 from power.demand_response import DemandResponseController
 from power.hvac_load_model import HVACLoadModel
 from power.power_metrics import PowerMetricsCalculator
@@ -46,6 +47,12 @@ PHASE3_SCENARIOS = {
     "backdoor_load_spike",
     "comfort_violation_attack",
     "phase3_all",
+}
+
+PHASE4_SCENARIOS = {
+    "phase4_monte_carlo",
+    "phase4_sensitivity",
+    "phase4_all",
 }
 
 
@@ -226,7 +233,52 @@ def run_phase3_scenario(scenario: str, profile: str = "strict") -> tuple[list[di
     return logger.entries, metrics, report_paths
 
 
+def run_phase4_scenario(scenario: str) -> tuple[list[dict], dict, dict]:
+    root = project_root()
+    runner = Phase4ExperimentRunner(root)
+
+    if scenario == "phase4_monte_carlo":
+        results = runner.run_monte_carlo()
+        metrics = {
+            "monte_carlo_runs": int(len(results)),
+            "security_configurations_compared": int(results["security_configuration"].nunique()),
+        }
+        report_paths = {"metrics_csv": root / "data" / "phase4_experiment_results.csv"}
+    elif scenario == "phase4_sensitivity":
+        results_path = root / "data" / "phase4_experiment_results.csv"
+        if not results_path.exists():
+            runner.run_monte_carlo()
+        sensitivity = runner.run_sensitivity_analysis()
+        metrics = {
+            "sensitivity_rows": int(len(sensitivity)),
+            "output_metrics_ranked": int(sensitivity["output_metric"].nunique()),
+        }
+        report_paths = {"metrics_csv": root / "data" / "phase4_sensitivity_results.csv"}
+    else:
+        outputs = runner.run_all()
+        metrics = outputs["metrics"]
+        report_paths = {
+            "text_report": outputs["report_path"],
+            "metrics_csv": outputs["metrics_path"],
+        }
+
+    entries = [
+        {
+            "policy_decision": "APPROVED",
+            "scenario": scenario,
+            "source_ip": "simulation",
+            "target_device_count": 0,
+            "devices_changed": 0,
+            "reasons": ["Internal Phase 4 experiment workflow completed."],
+        }
+    ]
+    return entries, metrics, report_paths
+
+
 def run_scenario(scenario: str, profile: str = "strict") -> tuple[list[dict], dict, dict]:
+    if scenario in PHASE4_SCENARIOS:
+        return run_phase4_scenario(scenario)
+
     if scenario in PHASE3_SCENARIOS:
         return run_phase3_scenario(scenario, profile)
 
@@ -436,7 +488,8 @@ def render_results(console: Console, scenario: str, entries: list[dict], metrics
     for key, value in metrics.items():
         console.print(f"{key}: {value}")
 
-    console.print(f"\nReport written to [cyan]{report_paths['text_report']}[/cyan]")
+    if "text_report" in report_paths:
+        console.print(f"\nReport written to [cyan]{report_paths['text_report']}[/cyan]")
     console.print(f"Metrics written to [cyan]{report_paths['metrics_csv']}[/cyan]")
 
 
@@ -463,6 +516,9 @@ def parse_args() -> argparse.Namespace:
             "backdoor_load_spike",
             "comfort_violation_attack",
             "phase3_all",
+            "phase4_monte_carlo",
+            "phase4_sensitivity",
+            "phase4_all",
         ],
         default="normal",
         help="Scenario to run.",
