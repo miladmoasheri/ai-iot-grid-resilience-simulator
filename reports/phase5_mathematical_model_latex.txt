@@ -1,0 +1,41 @@
+Phase 5 Mathematical Optimization Model - LaTeX-Friendly Formulation
+
+Sets:
+C = candidate security configurations
+K = weighting profiles
+M = evaluation metrics
+
+Decision variable:
+x_c \in \{0,1\}
+
+Objective function for each weighting profile k \in K:
+\min Z_k = \sum_{c \in C} x_c \left(
+w^{k}_{sec} R_c +
+w^{k}_{pow} P_c +
+w^{k}_{com} H_c +
+w^{k}_{dr} D_c +
+w^{k}_{op} O_c +
+w^{k}_{av} L_c
+\right)
+
+Subject to:
+\sum_{c \in C} x_c = 1
+\sum_{c \in C} x_c A_c \leq A^{max}
+\sum_{c \in C} x_c D_c \leq D^{max}
+\sum_{c \in C} x_c V_c \geq V^{min}
+\sum_{c \in C} x_c O_c \leq F^{max} \quad \text{optional}
+\sum_{c \in C} x_c S_c \leq B \quad \text{optional}
+x_c \in \{0,1\} \quad \forall c \in C
+
+Where:
+R_c = security risk score
+P_c = power impact score
+H_c = comfort impact score
+D_c = demand-response failure rate
+O_c = operational friction score
+L_c = availability loss score
+A_c = attack success rate
+V_c = availability rate
+S_c = simulated security operation cost
+
+Future extension: x_{c,t} can select configuration c for each time period t.

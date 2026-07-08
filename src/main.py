@@ -16,6 +16,7 @@ from attacks.backdoor_access import SimulatedBackdoorAccess
 from attacks.scenario_runner import ScenarioRunner
 from devices.fleet_manager import FleetManager
 from experiments.experiment_runner import Phase4ExperimentRunner
+from optimization.optimizer import OptimizationRunner
 from power.demand_response import DemandResponseController
 from power.hvac_load_model import HVACLoadModel
 from power.power_metrics import PowerMetricsCalculator
@@ -53,6 +54,12 @@ PHASE4_SCENARIOS = {
     "phase4_monte_carlo",
     "phase4_sensitivity",
     "phase4_all",
+}
+
+PHASE5_SCENARIOS = {
+    "phase5_optimization",
+    "phase5_pareto",
+    "phase5_all",
 }
 
 
@@ -275,7 +282,49 @@ def run_phase4_scenario(scenario: str) -> tuple[list[dict], dict, dict]:
     return entries, metrics, report_paths
 
 
+def run_phase5_scenario(scenario: str) -> tuple[list[dict], dict, dict]:
+    root = project_root()
+    runner = OptimizationRunner(root)
+
+    if scenario == "phase5_optimization":
+        optimization = runner.run_optimization()
+        metrics = {
+            "weighting_profiles": int(optimization["weighting_profile"].nunique()),
+            "security_configurations_ranked": int(optimization["security_configuration"].nunique()),
+        }
+        report_paths = {"metrics_csv": root / "data" / "phase5_optimization_results.csv"}
+    elif scenario == "phase5_pareto":
+        pareto = runner.run_pareto()
+        metrics = {
+            "pareto_rows": int(len(pareto)),
+            "pareto_efficient_points": int(pareto["is_pareto_efficient"].sum()),
+        }
+        report_paths = {"metrics_csv": root / "data" / "phase5_pareto_results.csv"}
+    else:
+        outputs = runner.run_all()
+        metrics = outputs["metrics"]
+        report_paths = {
+            "text_report": outputs["report_path"],
+            "metrics_csv": outputs["metrics_path"],
+        }
+
+    entries = [
+        {
+            "policy_decision": "APPROVED",
+            "scenario": scenario,
+            "source_ip": "simulation",
+            "target_device_count": 0,
+            "devices_changed": 0,
+            "reasons": ["Internal Phase 5 optimization workflow completed."],
+        }
+    ]
+    return entries, metrics, report_paths
+
+
 def run_scenario(scenario: str, profile: str = "strict") -> tuple[list[dict], dict, dict]:
+    if scenario in PHASE5_SCENARIOS:
+        return run_phase5_scenario(scenario)
+
     if scenario in PHASE4_SCENARIOS:
         return run_phase4_scenario(scenario)
 
@@ -519,6 +568,9 @@ def parse_args() -> argparse.Namespace:
             "phase4_monte_carlo",
             "phase4_sensitivity",
             "phase4_all",
+            "phase5_optimization",
+            "phase5_pareto",
+            "phase5_all",
         ],
         default="normal",
         help="Scenario to run.",

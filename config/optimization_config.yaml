@@ -1,0 +1,39 @@
+objective_weights:
+  security_focused:
+    security_risk: 0.45
+    power_impact: 0.20
+    comfort_impact: 0.15
+    demand_response_failure: 0.10
+    operational_friction: 0.05
+    availability_loss: 0.05
+
+  operations_focused:
+    security_risk: 0.15
+    power_impact: 0.10
+    comfort_impact: 0.10
+    demand_response_failure: 0.10
+    operational_friction: 0.35
+    availability_loss: 0.20
+
+  balanced:
+    security_risk: 0.30
+    power_impact: 0.20
+    comfort_impact: 0.15
+    demand_response_failure: 0.15
+    operational_friction: 0.10
+    availability_loss: 0.10
+
+optimization:
+  method: grid_search
+  use_phase4_results: true
+  pareto_objectives:
+    - security_risk_score
+    - operational_friction_score
+    - power_impact_score
+    - comfort_impact_score
+    - availability_loss_score
+
+recommendation:
+  require_availability_above: 0.95
+  require_attack_success_below: 0.10
+  require_demand_response_failure_below: 0.10

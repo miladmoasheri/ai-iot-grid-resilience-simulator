@@ -82,6 +82,20 @@ python src/main.py --scenario phase4_sensitivity
 python src/main.py --scenario phase4_all
 ```
 
+Phase 5 optimization scenarios:
+
+```bash
+python src/main.py --scenario phase5_optimization
+python src/main.py --scenario phase5_pareto
+python src/main.py --scenario phase5_all
+```
+
+Launch the dashboard:
+
+```bash
+streamlit run dashboard/app.py
+```
+
 ## Sample Output
 
 ```text
@@ -107,6 +121,7 @@ Each run writes:
 - `reports/phase2_report.txt` and `reports/phase2_metrics.csv` for Phase 2 scenarios
 - `reports/phase3_report.txt`, `reports/phase3_metrics.csv`, and `data/phase3_load_timeseries.csv` for Phase 3 scenarios
 - `reports/phase4_report.txt`, `reports/phase4_metrics.csv`, and Phase 4 experiment datasets for Phase 4 scenarios
+- `reports/phase5_report.txt`, `reports/phase5_recommendations.txt`, Phase 5 charts, and Phase 5 optimization datasets for Phase 5 scenarios
 
 ## Phase 2
 
@@ -217,8 +232,87 @@ The statistical summary reports mean, median, standard deviation, min, max, and 
 
 The sensitivity analysis uses approximate simulation-based normalized correlation rankings to identify which inputs most influence load spike, comfort loss, demand-response failure, attack success, operational friction, and balanced objective score. These rankings are not causal proof because some variables are bundled by security configuration.
 
-## Planned Phase 5 Additions
+## Phase 5
 
-- Anomaly detection over thermostat events.
-- Optimization for comfort, safety, and demand-response goals.
-- Dashboard for interactive scenario control and experiment review.
+Phase 5 adds a decision-support optimization layer over the Phase 4 Monte Carlo results. It compares cyber-resilience configurations under different objective weights, identifies Pareto trade-offs, recommends configurations under feasibility constraints, and provides a Streamlit dashboard for exploring the results.
+
+The objective function combines:
+
+- `security_risk_score`
+- `power_impact_score`
+- `comfort_impact_score`
+- `demand_response_failure_score`
+- `operational_friction_score`
+- `availability_loss_score`
+
+Lower weighted objective scores are better. The default weighting profiles are:
+
+- `security_focused`: emphasizes attack reduction and power/comfort protection.
+- `operations_focused`: emphasizes availability and low operational friction.
+- `balanced`: uses the Phase 4 balanced weights across security, power, comfort, demand-response reliability, friction, and availability.
+
+Phase 5 outputs:
+
+- `data/phase5_optimization_results.csv`
+- `data/phase5_pareto_results.csv`
+- `data/phase5_recommendations.csv`
+- `reports/phase5_report.txt`
+- `reports/phase5_recommendations.txt`
+- `reports/phase5_mathematical_model.md`
+- `reports/phase5_mathematical_model_latex.txt`
+- `reports/phase5_weighted_objective_by_profile.png`
+- `reports/phase5_pareto_security_vs_friction.png`
+- `reports/phase5_pareto_power_vs_comfort.png`
+- `reports/phase5_recommendation_summary.png`
+
+The Pareto analysis evaluates trade-offs such as security risk versus operational friction, power impact versus comfort impact, and security risk versus availability loss. The recommendation engine reports the best security-focused, operations-focused, balanced, and feasible configurations.
+
+### Formal Operations Research Model
+
+Phase 5 is a simulation-driven binary configuration-selection optimization model. The simulation provides parameter values, and the optimization selects the best feasible security configuration under different decision-maker priorities.
+
+Sets:
+
+- `C`: candidate security configurations, such as `weak_baseline`, `network_focused`, `firmware_focused`, and `adaptive_resilience`.
+- `K`: weighting profiles, such as `security_focused`, `operations_focused`, and `balanced`.
+- `M`: evaluation metrics.
+
+Parameters include `AttackSuccess_c`, `DRFailure_c`, `Availability_c`, `SecurityRisk_c`, `PowerImpact_c`, `ComfortImpact_c`, `OperationalFriction_c`, `AvailabilityLoss_c`, `SecurityCost_c`, and `w_m,k`, the weight of metric `m` under weighting profile `k`.
+
+Decision variables:
+
+- `x_c = 1` if security configuration `c` is selected.
+- `x_c = 0` otherwise.
+
+Objective function:
+
+For each weighting profile `k`, minimize:
+
+```text
+Z_k = sum over c in C of x_c [
+  w_security,k * SecurityRisk_c
+  + w_power,k * PowerImpact_c
+  + w_comfort,k * ComfortImpact_c
+  + w_dr,k * DRFailure_c
+  + w_friction,k * OperationalFriction_c
+  + w_availability,k * AvailabilityLoss_c
+]
+```
+
+Lower `Z_k` is better.
+
+Constraints:
+
+- Select exactly one configuration: `sum over c in C of x_c = 1`.
+- Attack success threshold: `sum over c in C of x_c * AttackSuccess_c <= 0.10`.
+- Demand-response failure threshold: `sum over c in C of x_c * DRFailure_c <= 0.10`.
+- Availability threshold: `sum over c in C of x_c * Availability_c >= 0.95`.
+- Optional operational-friction constraint: `sum over c in C of x_c * OperationalFriction_c <= F_max`.
+- Optional security-cost constraint: `sum over c in C of x_c * SecurityCost_c <= B`.
+- Binary decision constraint: `x_c in {0,1}`.
+
+Future extension: The model can be extended into a time-indexed scheduling formulation where `x_{c,t}` selects a security configuration `c` for each time period `t`, allowing different profiles for business hours, weekends, maintenance windows, demand-response events, and active-attack conditions.
+
+The dashboard loads Phase 4 and Phase 5 outputs and provides sections for project overview, configuration comparison, sensitivity ranking, optimization, Pareto trade-offs, and recommendation summary.
+
+Important interpretation note: Phase 5 is a simulation-based decision-support model. The optimization results depend on chosen weights and simplified assumptions. They should not be interpreted as universal security truth. A real deployment would require real device data, power-system validation, and operational stakeholder input.

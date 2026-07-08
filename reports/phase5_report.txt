@@ -1,0 +1,106 @@
+AI-Assisted Demand Response Cyber-Resilience Simulator
+Phase 5 Report
+
+Purpose:
+Phase 5 adds simulation-based decision support. It uses Phase 4 experiment results to identify cyber-resilience configurations that perform best under different objective weights.
+
+Safety Scope:
+This is a simulation-based decision-support model. All attack, firmware, backdoor, AI-assistant, and power-system behavior remains internal simulation state and generated metrics only.
+
+Optimization Method:
+- Method: grid_search
+- Source data: data/phase4_experiment_results.csv
+- Lower weighted objective scores are better.
+
+Formal Operations Research Model:
+
+Sets:
+- C = set of candidate security configurations.
+- Example C = {adaptive_resilience, firmware_focused, network_focused, weak_baseline}.
+- K = set of weighting profiles.
+- Example K = {security_focused, operations_focused, balanced}.
+- M = set of evaluation metrics.
+
+Parameters:
+- AttackSuccess_c = mean attack success rate for configuration c.
+- DRFailure_c = mean demand-response failure rate for configuration c.
+- Availability_c = mean availability rate for configuration c.
+- SecurityRisk_c = normalized cybersecurity risk score for configuration c.
+- PowerImpact_c = normalized load/power impact score for configuration c.
+- ComfortImpact_c = normalized comfort-loss score for configuration c.
+- OperationalFriction_c = normalized operational friction score for configuration c.
+- AvailabilityLoss_c = normalized availability-loss score for configuration c.
+- SecurityCost_c = simulated security operation cost for configuration c.
+- w_m,k = weight of metric m under weighting profile k.
+
+Decision variables:
+- x_c = 1 if security configuration c is selected.
+- x_c = 0 otherwise.
+
+Objective function:
+For each weighting profile k, minimize Z_k:
+Z_k = sum over c in C of x_c [w_security,k * SecurityRisk_c + w_power,k * PowerImpact_c + w_comfort,k * ComfortImpact_c + w_dr,k * DRFailure_c + w_friction,k * OperationalFriction_c + w_availability,k * AvailabilityLoss_c].
+Lower Z_k is better.
+
+Constraints:
+- Select exactly one configuration: sum over c in C of x_c = 1.
+- Attack success threshold: sum over c in C of x_c * AttackSuccess_c <= 0.10.
+- Demand-response failure threshold: sum over c in C of x_c * DRFailure_c <= 0.10.
+- Availability threshold: sum over c in C of x_c * Availability_c >= 0.95.
+- Optional operational-friction constraint: sum over c in C of x_c * OperationalFriction_c <= F_max.
+- Optional security-cost constraint: sum over c in C of x_c * SecurityCost_c <= B.
+- Binary decision constraint: x_c in {0,1}.
+
+Interpretation:
+This is a binary configuration-selection optimization model. The simulation provides the parameter values, and the optimization chooses the best feasible security configuration under different decision-maker priorities.
+
+Objective Weights:
+- security_focused: security_risk=0.45, power_impact=0.2, comfort_impact=0.15, demand_response_failure=0.1, operational_friction=0.05, availability_loss=0.05
+- operations_focused: security_risk=0.15, power_impact=0.1, comfort_impact=0.1, demand_response_failure=0.1, operational_friction=0.35, availability_loss=0.2
+- balanced: security_risk=0.3, power_impact=0.2, comfort_impact=0.15, demand_response_failure=0.15, operational_friction=0.1, availability_loss=0.1
+
+Best Configuration by Weighting Profile:
+- balanced: firmware_focused (mean score 0.0914)
+- operations_focused: weak_baseline (mean score 0.1099)
+- security_focused: firmware_focused (mean score 0.0719)
+
+Optimization Results:
+ weighting_profile security_configuration  mean_weighted_objective_score  mean_attack_success_rate  mean_demand_response_failure_rate  mean_availability_rate  rank
+          balanced       firmware_focused                         0.0914                    0.0299                             0.0169                  0.9936     1
+          balanced    adaptive_resilience                         0.1008                    0.0248                             0.0142                  0.9952     2
+          balanced        network_focused                         0.1067                    0.1165                             0.0654                  0.9598     3
+          balanced          weak_baseline                         0.1355                    0.2762                             0.1558                  1.0000     4
+operations_focused          weak_baseline                         0.1099                    0.2762                             0.1558                  1.0000     1
+operations_focused        network_focused                         0.1745                    0.1165                             0.0654                  0.9598     2
+operations_focused       firmware_focused                         0.2105                    0.0299                             0.0169                  0.9936     3
+operations_focused    adaptive_resilience                         0.2582                    0.0248                             0.0142                  0.9952     4
+  security_focused       firmware_focused                         0.0719                    0.0299                             0.0169                  0.9936     1
+  security_focused    adaptive_resilience                         0.0733                    0.0248                             0.0142                  0.9952     2
+  security_focused        network_focused                         0.1008                    0.1165                             0.0654                  0.9598     3
+  security_focused          weak_baseline                         0.1564                    0.2762                             0.1558                  1.0000     4
+
+Pareto Analysis Summary:
+- Pareto-efficient experiment points: 19
+- Trade-off pairs evaluated: security risk vs operational friction, power impact vs comfort impact, and security risk vs availability loss.
+
+Recommendation Summary:
+- best_security_focused_configuration: firmware_focused (constraints met: True; attack=0.029911, DR failure=0.016903, availability=0.993583)
+  Reason: Lowest weighted objective score for this profile.
+- best_operations_focused_configuration: weak_baseline (constraints met: False; attack=0.276228, DR failure=0.155833, availability=1.0)
+  Reason: Lowest weighted objective score for this profile. Does not satisfy feasibility constraints: attack success 0.2762 > 0.1000, DR failure 0.1558 > 0.1000.
+- best_balanced_configuration: firmware_focused (constraints met: True; attack=0.029911, DR failure=0.016903, availability=0.993583)
+  Reason: Lowest weighted objective score for this profile.
+- best_feasible_configuration: firmware_focused (constraints met: True; attack=0.029911, DR failure=0.016903, availability=0.993583)
+  Reason: Lowest balanced score among configurations satisfying availability, attack, and DR constraints.
+
+Trade-off Interpretation:
+- Security-focused weights favor configurations that reduce attack success and demand-response disruption, even when operational friction increases.
+- Operations-focused weights favor lower approval burden, lower false positives, and higher availability, which may accept more residual security risk. A configuration can win under operations-focused weights while still failing feasibility constraints.
+- Balanced weights seek a compromise across cyber risk, power stability, comfort, demand-response reliability, friction, and availability.
+- The optimization is not only a dashboard or scoring tool; it is a simulation-driven binary decision model where the simulation provides parameter values and the model selects a configuration.
+- Future extension: The model can be extended into a time-indexed scheduling formulation where x_{c,t} selects a security configuration c for each time period t, allowing different profiles for business hours, weekends, maintenance windows, demand-response events, and active-attack conditions.
+
+Limitations:
+- The optimization results depend on chosen weights and simplified assumptions.
+- The results should not be interpreted as universal security truth.
+- A real deployment would require real device data, power-system validation, and operational stakeholder input.

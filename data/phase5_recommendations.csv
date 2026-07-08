@@ -1,0 +1,5 @@
+recommendation_category,weighting_profile,security_configuration,mean_weighted_objective_score,mean_attack_success_rate,mean_demand_response_failure_rate,mean_availability_rate,constraints_met,reason
+best_security_focused_configuration,security_focused,firmware_focused,0.07192,0.029911,0.016903,0.993583,True,Lowest weighted objective score for this profile.
+best_operations_focused_configuration,operations_focused,weak_baseline,0.109933,0.276228,0.155833,1.0,False,"Lowest weighted objective score for this profile. Does not satisfy feasibility constraints: attack success 0.2762 > 0.1000, DR failure 0.1558 > 0.1000."
+best_balanced_configuration,balanced,firmware_focused,0.091383,0.029911,0.016903,0.993583,True,Lowest weighted objective score for this profile.
+best_feasible_configuration,balanced,firmware_focused,0.091383,0.029911,0.016903,0.993583,True,"Lowest balanced score among configurations satisfying availability, attack, and DR constraints."

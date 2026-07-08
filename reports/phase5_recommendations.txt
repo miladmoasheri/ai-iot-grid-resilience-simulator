@@ -1,0 +1,49 @@
+Phase 5 Recommendations
+
+Feasibility constraints:
+- Availability rate >= 0.95
+- Attack success rate <= 0.1
+- Demand-response failure rate <= 0.1
+
+best_security_focused_configuration:
+- Configuration: firmware_focused
+- Weighting profile: security_focused
+- Mean weighted objective score: 0.07192
+- Mean attack success rate: 0.029911
+- Mean demand-response failure rate: 0.016903
+- Mean availability rate: 0.993583
+- Constraints met: True
+- Reason: Lowest weighted objective score for this profile.
+
+best_operations_focused_configuration:
+- Configuration: weak_baseline
+- Weighting profile: operations_focused
+- Mean weighted objective score: 0.109933
+- Mean attack success rate: 0.276228
+- Mean demand-response failure rate: 0.155833
+- Mean availability rate: 1.0
+- Constraints met: False
+- Reason: Lowest weighted objective score for this profile. Does not satisfy feasibility constraints: attack success 0.2762 > 0.1000, DR failure 0.1558 > 0.1000.
+
+best_balanced_configuration:
+- Configuration: firmware_focused
+- Weighting profile: balanced
+- Mean weighted objective score: 0.091383
+- Mean attack success rate: 0.029911
+- Mean demand-response failure rate: 0.016903
+- Mean availability rate: 0.993583
+- Constraints met: True
+- Reason: Lowest weighted objective score for this profile.
+
+best_feasible_configuration:
+- Configuration: firmware_focused
+- Weighting profile: balanced
+- Mean weighted objective score: 0.091383
+- Mean attack success rate: 0.029911
+- Mean demand-response failure rate: 0.016903
+- Mean availability rate: 0.993583
+- Constraints met: True
+- Reason: Lowest balanced score among configurations satisfying availability, attack, and DR constraints.
+
+Interpretation:
+These recommendations are simulation-based decision support. They depend on the chosen weights, constraints, and simplified model assumptions.
