@@ -1,0 +1,72 @@
+AI-Assisted Demand Response Cyber-Resilience Simulator
+Phase 3 Report
+
+Summary Metrics:
+- total_commands: 5
+- approved_commands: 5
+- blocked_commands: 0
+- prompt_injection_attempts: 0
+- unauthorized_ip_attempts: 0
+- unsafe_temperature_attempts: 0
+- commands_blocked_by_device_count_threshold: 0
+- total_devices_changed: 0
+- firmware_updates_attempted: 0
+- valid_firmware_updates_accepted: 0
+- tampered_firmware_updates_blocked: 0
+- tampered_firmware_updates_accepted: 0
+- tampered_firmware_update_events_accepted: 0
+- firmware_tampering_attempts: 0
+- firmware_backdoor_payload_attempts: 0
+- devices_compromised: 0
+- newly_compromised_devices: 0
+- unique_devices_compromised: 0
+- simulated_backdoor_access_attempts: 0
+- simulated_backdoor_access_successes: 0
+- devices_quarantined: 0
+- devices_recovered: 0
+- approved_mass_commands: 0
+- mass_commands_blocked_without_approval: 0
+- phase3_power_scenarios_run: 5
+- baseline_peak_load_kw: 350.0
+- demand_response_normal_peak_load_kw: 350.0
+- demand_response_attack_peak_load_kw: 350.0
+- backdoor_load_spike_peak_load_kw: 350.0
+- comfort_attack_peak_load_kw: 340.0
+- dr_normal_reduction_kw: 87.5
+- dr_attack_reduction_kw: 0.0
+- attack_vs_dr_load_increase_kw: 100.0
+- backdoor_spike_vs_baseline_kw: 10.0
+- total_energy_consumed_kwh: 4357.5
+- comfort_loss_degree_minutes: 6457.5
+- max_demand_response_failure_rate: 1.0
+- compromised_load_kw: 110.0
+- protected_load_kw: 1630.0
+- demand_response_normal_failure_rate: 0.0
+- demand_response_attack_failure_rate: 1.0
+- backdoor_spike_compromised_devices_count: 5
+- backdoor_spike_compromised_load_kw: 10.0
+- backdoor_spike_protected_load_kw: 340.0
+- backdoor_spike_total_load_kw: 350.0
+- load_spike_kw_from_compromised_devices: 10.0
+- comfort_attack_comfort_loss_degree_minutes: 682.5
+
+Phase 3 model note:
+- This is a simplified HVAC load and demand-response model, not a full grid power-flow simulation.
+- Load values are generated from thermostat state, simple cooling logic, and fixed per-device HVAC kW.
+- Passive ambient heat gain is included so indoor temperatures drift upward when cooling is inactive.
+- Phase 4 is planned to add repeated experiments, statistical analysis, and sensitivity analysis.
+
+Phase 3 interpretation:
+- Baseline peak load: 350.0 kW.
+- Normal demand response event-window reduction: 87.5 kW.
+- Demand-response attack event-window reduction: 0.0 kW.
+- Attack versus normal DR event load increase: 100.0 kW.
+- Backdoor load spike versus its neutral baseline: 10.0 kW.
+- The comfort violation scenario can reduce HVAC load while increasing comfort loss, showing a safety-impact trade-off.
+
+Command Decisions:
+- [APPROVED] power_baseline | simulation | Run Phase 3 power scenario: power_baseline | devices changed: 0 | compromised: 0 | quarantined: 0 | recovered: 0 | peak_load_kw: 350.0 | total_energy_kwh: 1137.5 | comfort_loss_degree_minutes: 0.0 | pre_event_average_load_kw: 350.0 | event_average_load_kw: 87.5 | baseline_event_average_load_kw: 87.5 | demand_response_target_reduction_kw: 0.0 | demand_response_actual_reduction_kw: 0.0 | demand_response_achievement_rate: 0.0 | demand_response_failure_rate: 0.0 | compromised_devices_count: 0 | compromised_load_kw: 0.0 | protected_load_kw: 350.0 | total_load_kw: 350.0 | load_spike_kw_from_compromised_devices: 0.0 | Internal Phase 3 power-demand simulation completed.
+- [APPROVED] demand_response_normal | simulation | Run Phase 3 power scenario: demand_response_normal | devices changed: 0 | compromised: 0 | quarantined: 0 | recovered: 0 | peak_load_kw: 350.0 | total_energy_kwh: 700.0 | comfort_loss_degree_minutes: 0.0 | pre_event_average_load_kw: 350.0 | event_average_load_kw: 0.0 | baseline_event_average_load_kw: 87.5 | demand_response_target_reduction_kw: 52.5 | demand_response_actual_reduction_kw: 87.5 | demand_response_achievement_rate: 1.0 | demand_response_failure_rate: 0.0 | compromised_devices_count: 0 | compromised_load_kw: 0.0 | protected_load_kw: 350.0 | total_load_kw: 350.0 | load_spike_kw_from_compromised_devices: 0.0 | Internal Phase 3 power-demand simulation completed.
+- [APPROVED] demand_response_attack | simulation | Run Phase 3 power scenario: demand_response_attack | devices changed: 0 | compromised: 0 | quarantined: 0 | recovered: 0 | peak_load_kw: 350.0 | total_energy_kwh: 1100.0 | comfort_loss_degree_minutes: 5250.0 | pre_event_average_load_kw: 350.0 | event_average_load_kw: 100.0 | baseline_event_average_load_kw: 87.5 | demand_response_target_reduction_kw: 52.5 | demand_response_actual_reduction_kw: 0.0 | demand_response_achievement_rate: 0.0 | demand_response_failure_rate: 1.0 | compromised_devices_count: 50 | compromised_load_kw: 100.0 | protected_load_kw: 250.0 | total_load_kw: 350.0 | load_spike_kw_from_compromised_devices: 100.0 | Internal Phase 3 power-demand simulation completed.
+- [APPROVED] backdoor_load_spike | simulation | Run Phase 3 power scenario: backdoor_load_spike | devices changed: 0 | compromised: 0 | quarantined: 0 | recovered: 0 | peak_load_kw: 350.0 | total_energy_kwh: 740.0 | comfort_loss_degree_minutes: 525.0 | pre_event_average_load_kw: 95.0 | event_average_load_kw: 137.5 | baseline_event_average_load_kw: 131.25 | demand_response_target_reduction_kw: 0.0 | demand_response_actual_reduction_kw: 0.0 | demand_response_achievement_rate: 0.0 | demand_response_failure_rate: 0.0 | compromised_devices_count: 5 | compromised_load_kw: 10.0 | protected_load_kw: 340.0 | total_load_kw: 350.0 | load_spike_kw_from_compromised_devices: 10.0 | Internal Phase 3 power-demand simulation completed.
+- [APPROVED] comfort_violation_attack | simulation | Run Phase 3 power scenario: comfort_violation_attack | devices changed: 0 | compromised: 0 | quarantined: 0 | recovered: 0 | peak_load_kw: 340.0 | total_energy_kwh: 680.0 | comfort_loss_degree_minutes: 682.5 | pre_event_average_load_kw: 85.0 | event_average_load_kw: 127.5 | baseline_event_average_load_kw: 131.25 | demand_response_target_reduction_kw: 0.0 | demand_response_actual_reduction_kw: 3.75 | demand_response_achievement_rate: 0.0 | demand_response_failure_rate: 0.0 | compromised_devices_count: 5 | compromised_load_kw: 0.0 | protected_load_kw: 340.0 | total_load_kw: 340.0 | load_spike_kw_from_compromised_devices: 0.0 | Internal Phase 3 power-demand simulation completed.

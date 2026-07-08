@@ -19,6 +19,12 @@ class ScenarioRunner:
         "quarantine_recovery",
         "approved_mass_command",
         "phase2_all",
+        "power_baseline",
+        "demand_response_normal",
+        "demand_response_attack",
+        "backdoor_load_spike",
+        "comfort_violation_attack",
+        "phase3_all",
     }
 
     def get_attempts(self, scenario: str) -> list[dict]:
@@ -142,5 +148,15 @@ class ScenarioRunner:
             ):
                 attempts.extend(attempts_by_scenario[name])
             return attempts
+
+        if scenario in {
+            "power_baseline",
+            "demand_response_normal",
+            "demand_response_attack",
+            "backdoor_load_spike",
+            "comfort_violation_attack",
+            "phase3_all",
+        }:
+            return [{"scenario": scenario, "action": "power_simulation"}]
 
         return attempts_by_scenario[scenario]

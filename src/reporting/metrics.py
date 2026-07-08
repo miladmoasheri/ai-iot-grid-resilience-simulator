@@ -16,6 +16,13 @@ class MetricsCalculator:
             for entry in entries
             for device_id in entry.get("compromised_device_ids", [])
         }
+        power_entries = [entry for entry in entries if entry.get("parsed_command", {}).get("intent") == "power_simulation"]
+        power_by_scenario = {entry.get("scenario"): entry for entry in power_entries}
+        baseline = power_by_scenario.get("power_baseline", {})
+        dr_normal = power_by_scenario.get("demand_response_normal", {})
+        dr_attack = power_by_scenario.get("demand_response_attack", {})
+        backdoor_spike = power_by_scenario.get("backdoor_load_spike", {})
+        comfort_attack = power_by_scenario.get("comfort_violation_attack", {})
 
         return {
             "total_commands": len(entries),
@@ -89,4 +96,45 @@ class MetricsCalculator:
             "mass_commands_blocked_without_approval": sum(
                 1 for text in reasons_text if "without approval" in text and "exceeding threshold" in text
             ),
+            "phase3_power_scenarios_run": len(power_entries),
+            "baseline_peak_load_kw": baseline.get("peak_load_kw", 0.0),
+            "demand_response_normal_peak_load_kw": dr_normal.get("peak_load_kw", 0.0),
+            "demand_response_attack_peak_load_kw": dr_attack.get("peak_load_kw", 0.0),
+            "backdoor_load_spike_peak_load_kw": backdoor_spike.get("peak_load_kw", 0.0),
+            "comfort_attack_peak_load_kw": comfort_attack.get("peak_load_kw", 0.0),
+            "dr_normal_reduction_kw": dr_normal.get("demand_response_actual_reduction_kw", 0.0),
+            "dr_attack_reduction_kw": dr_attack.get("demand_response_actual_reduction_kw", 0.0),
+            "attack_vs_dr_load_increase_kw": round(
+                dr_attack.get("event_average_load_kw", 0.0) - dr_normal.get("event_average_load_kw", 0.0),
+                3,
+            ),
+            "backdoor_spike_vs_baseline_kw": round(
+                backdoor_spike.get("load_spike_kw_from_compromised_devices", 0.0),
+                3,
+            ),
+            "total_energy_consumed_kwh": round(
+                sum(entry.get("total_energy_kwh", 0.0) for entry in power_entries),
+                3,
+            ),
+            "comfort_loss_degree_minutes": round(
+                sum(entry.get("comfort_loss_degree_minutes", 0.0) for entry in power_entries),
+                3,
+            ),
+            "max_demand_response_failure_rate": max(
+                (entry.get("demand_response_failure_rate", 0.0) for entry in power_entries),
+                default=0.0,
+            ),
+            "compromised_load_kw": round(sum(entry.get("compromised_load_kw", 0.0) for entry in power_entries), 3),
+            "protected_load_kw": round(sum(entry.get("protected_load_kw", 0.0) for entry in power_entries), 3),
+            "demand_response_normal_failure_rate": dr_normal.get("demand_response_failure_rate", 0.0),
+            "demand_response_attack_failure_rate": dr_attack.get("demand_response_failure_rate", 0.0),
+            "backdoor_spike_compromised_devices_count": backdoor_spike.get("compromised_devices_count", 0),
+            "backdoor_spike_compromised_load_kw": backdoor_spike.get("compromised_load_kw", 0.0),
+            "backdoor_spike_protected_load_kw": backdoor_spike.get("protected_load_kw", 0.0),
+            "backdoor_spike_total_load_kw": backdoor_spike.get("total_load_kw", 0.0),
+            "load_spike_kw_from_compromised_devices": backdoor_spike.get(
+                "load_spike_kw_from_compromised_devices",
+                0.0,
+            ),
+            "comfort_attack_comfort_loss_degree_minutes": comfort_attack.get("comfort_loss_degree_minutes", 0.0),
         }

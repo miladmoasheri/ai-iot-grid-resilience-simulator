@@ -1,0 +1,25 @@
+simulation:
+  time_steps: 24
+  time_step_minutes: 15
+  ambient_temperature: 30
+  passive_heat_gain_rate: 0.10
+
+hvac:
+  default_power_kw: 2.5
+  residential_power_kw: 2.0
+  commercial_power_kw: 5.0
+  default_temperature_change_rate: 0.25
+
+comfort:
+  min_comfort_temp: 20
+  max_comfort_temp: 25
+
+demand_response:
+  target_load_reduction_percent: 15
+  event_start_step: 8
+  event_end_step: 16
+  dr_target_temperature: 24
+
+attack:
+  load_spike_temperature: 16
+  comfort_attack_temperature: 28

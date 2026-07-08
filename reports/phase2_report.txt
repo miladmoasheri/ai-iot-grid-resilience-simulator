@@ -2,30 +2,53 @@ AI-Assisted Demand Response Cyber-Resilience Simulator
 Phase 2 Report
 
 Summary Metrics:
-- total_commands: 10
-- approved_commands: 8
-- blocked_commands: 2
+- total_commands: 1
+- approved_commands: 1
+- blocked_commands: 0
 - prompt_injection_attempts: 0
 - unauthorized_ip_attempts: 0
 - unsafe_temperature_attempts: 0
-- commands_blocked_by_device_count_threshold: 1
-- total_devices_changed: 140
-- firmware_updates_attempted: 5
-- valid_firmware_updates_accepted: 1
-- tampered_firmware_updates_blocked: 1
-- tampered_firmware_updates_accepted: 3
-- tampered_firmware_update_events_accepted: 3
-- firmware_tampering_attempts: 4
-- firmware_backdoor_payload_attempts: 3
+- commands_blocked_by_device_count_threshold: 0
+- total_devices_changed: 5
+- firmware_updates_attempted: 1
+- valid_firmware_updates_accepted: 0
+- tampered_firmware_updates_blocked: 0
+- tampered_firmware_updates_accepted: 1
+- tampered_firmware_update_events_accepted: 1
+- firmware_tampering_attempts: 1
+- firmware_backdoor_payload_attempts: 1
 - devices_compromised: 5
 - newly_compromised_devices: 5
 - unique_devices_compromised: 5
-- simulated_backdoor_access_attempts: 2
-- simulated_backdoor_access_successes: 1
-- devices_quarantined: 5
-- devices_recovered: 5
-- approved_mass_commands: 1
-- mass_commands_blocked_without_approval: 1
+- simulated_backdoor_access_attempts: 0
+- simulated_backdoor_access_successes: 0
+- devices_quarantined: 0
+- devices_recovered: 0
+- approved_mass_commands: 0
+- mass_commands_blocked_without_approval: 0
+- phase3_power_scenarios_run: 0
+- baseline_peak_load_kw: 0.0
+- demand_response_normal_peak_load_kw: 0.0
+- demand_response_attack_peak_load_kw: 0.0
+- backdoor_load_spike_peak_load_kw: 0.0
+- comfort_attack_peak_load_kw: 0.0
+- dr_normal_reduction_kw: 0.0
+- dr_attack_reduction_kw: 0.0
+- attack_vs_dr_load_increase_kw: 0.0
+- backdoor_spike_vs_baseline_kw: 0.0
+- total_energy_consumed_kwh: 0
+- comfort_loss_degree_minutes: 0
+- max_demand_response_failure_rate: 0.0
+- compromised_load_kw: 0
+- protected_load_kw: 0
+- demand_response_normal_failure_rate: 0.0
+- demand_response_attack_failure_rate: 0.0
+- backdoor_spike_compromised_devices_count: 0
+- backdoor_spike_compromised_load_kw: 0.0
+- backdoor_spike_protected_load_kw: 0.0
+- backdoor_spike_total_load_kw: 0.0
+- load_spike_kw_from_compromised_devices: 0.0
+- comfort_attack_comfort_loss_degree_minutes: 0.0
 
 Phase 2 campaign note:
 - phase2_all is a sequential campaign run. Some scenario steps intentionally reuse the same first 5 devices.
@@ -33,13 +56,4 @@ Phase 2 campaign note:
 - Unique device metrics count distinct device IDs across the full campaign.
 
 Command Decisions:
-- [APPROVED] normal | 10.0.0.10 | Set first 10 Building A thermostats to 22 degrees | devices changed: 10 | compromised: 0 | quarantined: 0 | recovered: 0 | No blocking reasons.
-- [BLOCKED] mass_command | 10.0.0.10 | Set all thermostats to 21 degrees | devices changed: 0 | compromised: 0 | quarantined: 0 | recovered: 0 | Command targets 100 devices, exceeding threshold of 20 without approval.
-- [APPROVED] firmware_valid_update | 10.0.0.20 | Install firmware version 1.1.0 on first 10 thermostats | devices changed: 10 | compromised: 0 | quarantined: 0 | recovered: 0 | firmware: fw-1.1.0 1.1.0 | No blocking reasons.
-- [BLOCKED] firmware_tampering_blocked | 10.0.0.20 | Install tampered firmware version 1.1.0 on first 10 thermostats | devices changed: 0 | compromised: 0 | quarantined: 0 | recovered: 0 | firmware: fw-1.1.0 1.1.0 | Firmware signature is invalid and this profile requires valid signatures.; Unsigned or invalid-signature firmware is not allowed.; Tampered firmware is blocked by the selected security profile.
 - [APPROVED] firmware_tampering_weak_profile | 10.0.0.20 | Install tampered unsigned firmware version 1.1.0 with backdoor on first 5 thermostats | devices changed: 5 | compromised: 5 | quarantined: 0 | recovered: 0 | firmware: fw-1.1.0 1.1.0 | No blocking reasons.
-- [APPROVED] simulated_backdoor_access | 10.0.0.20 | Install tampered unsigned firmware version 1.1.0 with backdoor on first 5 thermostats | devices changed: 5 | compromised: 0 | quarantined: 0 | recovered: 0 | firmware: fw-1.1.0 1.1.0 | No blocking reasons.
-- [APPROVED] simulated_backdoor_access | 203.0.113.50 | Simulated backdoor direct command to 19 degrees | devices changed: 5 | compromised: 0 | quarantined: 0 | recovered: 0 | eligible_backdoor_devices: 5 | backdoor_affected_devices: 5 | backdoor_blocked_devices: 5 | compromised_devices_targeted: 5 | trusted_devices_targeted: 5 | Simulated backdoor path affected compromised devices.
-- [APPROVED] quarantine_recovery | 10.0.0.20 | Install tampered unsigned firmware version 1.1.0 with backdoor on first 5 thermostats | devices changed: 5 | compromised: 0 | quarantined: 0 | recovered: 0 | firmware: fw-1.1.0 1.1.0 | No blocking reasons.
-- [APPROVED] quarantine_recovery | 10.0.0.20 | Detect, quarantine, test simulated backdoor, and recover devices | devices changed: 0 | compromised: 0 | quarantined: 5 | recovered: 5 | eligible_backdoor_devices: 0 | backdoor_affected_devices: 0 | backdoor_blocked_devices: 10 | compromised_devices_targeted: 0 | trusted_devices_targeted: 10 | Compromised devices quarantined and recovered to safe firmware.
-- [APPROVED] approved_mass_command | 10.0.0.10 | Approve and set all thermostats to 21 degrees | devices changed: 100 | compromised: 0 | quarantined: 0 | recovered: 0 | No blocking reasons.

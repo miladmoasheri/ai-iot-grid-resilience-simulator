@@ -63,6 +63,17 @@ python src/main.py --scenario phase2_all --profile weak_baseline
 python src/main.py --scenario phase2_all --profile balanced
 ```
 
+Phase 3 power-demand scenarios:
+
+```bash
+python src/main.py --scenario power_baseline
+python src/main.py --scenario demand_response_normal
+python src/main.py --scenario demand_response_attack
+python src/main.py --scenario backdoor_load_spike
+python src/main.py --scenario comfort_violation_attack
+python src/main.py --scenario phase3_all
+```
+
 ## Sample Output
 
 ```text
@@ -86,6 +97,7 @@ Each run writes:
 - `logs/simulation_log.json`
 - `reports/phase1_report.txt` and `reports/phase1_metrics.csv` for Phase 1 scenarios
 - `reports/phase2_report.txt` and `reports/phase2_metrics.csv` for Phase 2 scenarios
+- `reports/phase3_report.txt`, `reports/phase3_metrics.csv`, and `data/phase3_load_timeseries.csv` for Phase 3 scenarios
 
 ## Phase 2
 
@@ -148,10 +160,24 @@ Tests cover prompt-injection detection, unauthorized IP blocking, unsafe tempera
 - Approval is represented by parsed text or scenario flags, not a user-facing approval dashboard.
 - Quarantine and recovery are immediate state transitions rather than time-based workflows.
 
-## Planned Phase 3 Additions
+## Phase 3
+
+Phase 3 adds a simplified power-demand and demand-response impact model. Each thermostat now has HVAC power, active cooling state, thermal zone type, comfort bounds, a cooling rate, and passive ambient heat gain. The model produces load curves, total energy estimates, comfort-loss metrics, event-window demand-response target and actual reduction values, and compromised-versus-protected load summaries.
+
+This is not a full grid power-flow simulation. It is a transparent academic load model driven by thermostat setpoints, gradual temperature movement, ambient heat gain, and fixed HVAC power values.
+
+Phase 3 scenarios include:
+
+- `power_baseline`: normal HVAC load and comfort tracking.
+- `demand_response_normal`: a legitimate event raises setpoints to reduce cooling load.
+- `demand_response_attack`: compromised devices resist the event by targeting a lower temperature.
+- `backdoor_load_spike`: compromised devices are pushed to a low cooling setpoint.
+- `comfort_violation_attack`: compromised devices are pushed above the comfort band.
+- `phase3_all`: runs the full Phase 3 scenario set and writes one combined report.
+
+## Planned Phase 4 Additions
 
 - Anomaly detection over thermostat events.
 - Statistical experiments across repeated simulations.
-- Power demand model.
-- Demand-response impact model.
+- Repeated experiments and sensitivity analysis for thermal and power assumptions.
 - Optimization for comfort, safety, and demand-response goals.

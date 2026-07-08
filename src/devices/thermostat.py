@@ -23,6 +23,14 @@ class Thermostat(BaseModel):
     backdoor_enabled: bool = Field(default=False)
     last_firmware_update: str | None = Field(default=None)
     compromise_reason: str | None = Field(default=None)
+    hvac_power_kw: float = Field(default=2.5)
+    hvac_active: bool = Field(default=False)
+    thermal_zone_type: str = Field(default="mixed")
+    comfort_min_temp: float = Field(default=20.0)
+    comfort_max_temp: float = Field(default=25.0)
+    temperature_change_rate: float = Field(default=0.25)
+    ambient_temperature: float = Field(default=30.0)
+    passive_heat_gain_rate: float = Field(default=0.10)
 
     def update_target_temperature(self, new_temperature: float) -> None:
         """Update the simulated target temperature."""
@@ -80,6 +88,42 @@ class Thermostat(BaseModel):
         """Return whether the simulated device is currently compromised."""
 
         return self.trust_status == "compromised" or self.backdoor_enabled
+
+    def calculate_hvac_state(self) -> bool:
+        """Update and return whether simulated cooling is active."""
+
+        self.hvac_active = self.current_temperature > self.target_temperature + 0.1
+        return self.hvac_active
+
+    def calculate_power_demand_kw(self) -> float:
+        """Return simulated HVAC power demand for the current state."""
+
+        return self.hvac_power_kw if self.calculate_hvac_state() else 0.0
+
+    def update_temperature_step(self) -> None:
+        """Move zone temperature using simple cooling and passive heat gain."""
+
+        self.calculate_hvac_state()
+        if self.hvac_active:
+            self.current_temperature = max(
+                self.target_temperature,
+                self.current_temperature - self.temperature_change_rate,
+            )
+        elif self.current_temperature < self.ambient_temperature:
+            self.current_temperature = min(
+                self.ambient_temperature,
+                self.current_temperature + self.passive_heat_gain_rate,
+            )
+        self.calculate_hvac_state()
+
+    def calculate_comfort_deviation(self) -> float:
+        """Return degrees outside the configured comfort band."""
+
+        if self.current_temperature < self.comfort_min_temp:
+            return self.comfort_min_temp - self.current_temperature
+        if self.current_temperature > self.comfort_max_temp:
+            return self.current_temperature - self.comfort_max_temp
+        return 0.0
 
     def to_dict(self) -> dict:
         """Return a serializable device snapshot."""
